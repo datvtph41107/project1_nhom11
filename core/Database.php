@@ -75,18 +75,23 @@ class Database
     }
 
     public function saveDataMigrations(array $migrations)
-{
-    // Tạo một mảng chứa các giá trị của migration để thêm vào truy vấn
-    $values = array_map(fn($m) => "('$m')", $migrations);
-    
-    // Chuyển đổi mảng thành một chuỗi
-    $strValues = implode(",", $values);
+    {
+        // Tạo một mảng chứa các giá trị của migration để thêm vào truy vấn
+        $values = array_map(fn($m) => "('$m')", $migrations);
+        
+        // Chuyển đổi mảng thành một chuỗi
+        $strValues = implode(",", $values);
 
-    // Sử dụng $strValues trong truy vấn SQL
-    $statement = $this->pdo->prepare("INSERT INTO migrations (migration_file) VALUES $strValues");
+        // Sử dụng $strValues trong truy vấn SQL
+        $statement = $this->pdo->prepare("INSERT INTO migrations (migration_file) VALUES $strValues");
 
-    // Thực hiện truy vấn
-    $statement->execute();
-}
+        // Thực hiện truy vấn
+        $statement->execute();
+    }
+
+    public function prepare($sql)
+    {
+        return $this->pdo->prepare($sql);
+    }
 
 }

@@ -1,3 +1,11 @@
+<?php
+
+use app\core\Application;
+
+// echo '<pre>';
+//  var_dump(Application::$app->userExists);
+//  echo '</pre>';
+ ?>
 <!doctype html>
 <html lang="en">
 
@@ -24,10 +32,17 @@
                         <a class="nav-link" href="/contact">Contact</a>
                     </li>
                 </ul>
+                <?php if (Application::isGuest()):  ?>
                 <div class="d-flex fs-5 ">
                     <a class="nav-link mx-2 " href="/login">Login</a>
                     <a class="nav-link" href="/register">Register</a>
                 </div>
+                <?php else: ?>
+                <div class="d-flex fs-5 ">
+                    <div >Welcome <?php echo Application::$app->userExists->getUserName(); ?></div>
+                    <a class="nav-link mx-2 " href="/logout">(logout)</a>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
     </nav>

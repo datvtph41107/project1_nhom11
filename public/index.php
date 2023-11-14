@@ -12,6 +12,7 @@ $dotenv->load();
 // echo __DIR__; Lấy địa chỉ của thư mục hiện tại
 // echo (dirname(__DIR__)); lấy thư mục cha của thư mục hiện tại
 $config = [
+    'userClass' => \app\models\User::class,
     'db' => [
         'dsn' => $_ENV['DB_DSN'],
         'user' => $_ENV['DB_USER'],
@@ -29,7 +30,7 @@ $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
 $app->router->get('/register', [AuthController::class, 'register']);
 $app->router->post('/register', [AuthController::class, 'register']);
-
+$app->router->get('/logout', [AuthController::class, 'logout']);
 
 $app->run();
 ?>
