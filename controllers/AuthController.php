@@ -6,12 +6,13 @@ namespace app\controllers;
 use app\core\Application;
 use app\core\Controller;
 use app\core\Request;
+use app\core\Response;
 use app\models\LoginUser;
 use app\models\User;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request, Response $response)
     {
         $loginUser = new LoginUser();
         if ($request->isPost()) {
@@ -21,21 +22,30 @@ class AuthController extends Controller
             if ($loginUser->validateModel() && $loginUser->Checklogin()) {
                 // nếu validateModel() true && $logiUser->register() gọi hàm này và trả về dữ liệu 
                 // Success register điều hướng
-                Application::$app->response->redirect('/');
+                if (isset($_SESSION['redirect_url'])) {
+                    // Chuyển hướng đến trang đã lưu trữ
+                    $response->redirect($_SESSION['redirect_url']);
+                    // Xóa session 'redirect_url' để tránh chuyển hướng lại nếu người dùng truy cập trực tiếp trang đăng nhập
+                    unset($_SESSION['redirect_url']);
+                } else {
+                    // Nếu không có đường dẫn trước đó, chuyển hướng đến trang mặc định sau đăng nhập
+                    $response->redirect('/');
+                }
                 return;
             }
-            // echo '<pre>';
-            // var_dump($logiUser->errors);
-            // echo '</pre>';
             $this->setLayout('auth');
             return $this->render('login', [
                 'model' => $loginUser,
             ]);
         }
-        $this->setLayout('auth');
-        return $this->render('login', [
-            'model' => $loginUser,
-        ]);
+        if (Application::isGuest()) {
+            $this->setLayout('auth');
+            return $this->render('login', [
+                'model' => $loginUser,
+            ]);
+        }else {
+            Application::$app->response->redirect('/');
+        }
     }
 
     public function register(Request $request)
@@ -50,23 +60,36 @@ class AuthController extends Controller
                 // Success register điều hướng
                 Application::$app->response->redirect('/');
             }
-            // echo '<pre>';
-            // var_dump($user->errors);
-            // echo '</pre>';
             $this->setLayout('auth');
             return $this->render('register', [
                 'model' => $user,
             ]);
         }
-        return $this->render('register', [
-            'model' => $user,
-        ]);
-        $this->setLayout('auth');
+        if (Application::isGuest()) {
+            $this->setLayout('auth');
+            return $this->render('register', [
+                'model' => $user,
+            ]);
+        }else {
+            Application::$app->response->redirect('/');
+        }
+        
     }
 
     public function logout()
     {
         Application::$app->logout();
         Application::$app->response->redirect('/');
+    }
+
+    public function profile()
+    {
+        return $this->render('profile');
+        // return Application::$app->controller->render('profile');
+    }
+    public function cart()
+    {
+        return $this->render('cart');
+        // return Application::$app->controller->render('profile');
     }
 }

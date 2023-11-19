@@ -11,6 +11,8 @@
 
         abstract public function getUserName(): string;
 
+        abstract public function isAdmin(): bool;
+
         public function save()
         {
             $tableName = $this->tableName();
