@@ -13,18 +13,20 @@ class Field
     public string $type;
     public Model $model;
     public string $attribute;
+    public string $label;
 
     public function __construct(\app\core\Model $model, string $attribute)
     {
         $this->type = self::TYPE_TEXT;
         $this->model = $model;
         $this->attribute = $attribute;
+        $this->label = ucfirst($attribute);
     }
 
     public function __toString()
     {
         return sprintf(
-            '<div class="form-outline">
+            '<div class="form-group w-100">
                 <label class="form-label">%s</label>
                 <input type="%s" name="%s" value="%s" class="form-control form-control-lg %s" />
                 <div class="invalid-feedback">
@@ -32,7 +34,7 @@ class Field
                 </div>
             </div>'
         , 
-            $this->attribute, 
+            $this->label, 
             $this->type,
             $this->attribute, 
             $this->model->{$this->attribute},

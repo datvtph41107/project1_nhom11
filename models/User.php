@@ -1,6 +1,7 @@
 <?php 
 namespace app\models;
 
+use app\core\Application;
 use app\core\DbModel;
 
 class User extends DbModel
@@ -32,6 +33,14 @@ class User extends DbModel
         return [
             'firstname', 'lastname', 'email', 'password', 'status'
         ];
+    }
+
+    public function isAdmin(): bool
+    {
+        if (Application::$app->userExists->role === 1) {
+            return true;
+        }
+        return false;
     }
 
     public function getUserName(): string

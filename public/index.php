@@ -1,9 +1,11 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use app\controllers\AdminController;
 use app\controllers\AuthController;
 use app\controllers\SiteController;
 use app\core\Application;
+use app\core\middlewares\AuthMiddleware;
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
@@ -26,11 +28,17 @@ $app->router->get('/', [SiteController::class, 'home']);
 $app->router->get('/contact', [SiteController::class, 'contact']);
 $app->router->post('/contact', [SiteController::class, 'handleContact']);
 // Auth Controller
+$app->router->get('/profile', [AuthController::class, 'profile'], [AuthMiddleware::class]);
+$app->router->get('/cart', [AuthController::class, 'cart'], [AuthMiddleware::class]);
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
 $app->router->get('/register', [AuthController::class, 'register']);
 $app->router->post('/register', [AuthController::class, 'register']);
 $app->router->get('/logout', [AuthController::class, 'logout']);
+// Admin
+$app->router->get('/admin', [AdminController::class, 'login']);
+$app->router->post('/admin', [AdminController::class, 'login']);
+$app->router->get('/admin/dashboard', [AdminController::class, 'dashboard'], [AuthMiddleware::class]);
 
 $app->run();
 ?>

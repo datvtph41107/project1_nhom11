@@ -28,9 +28,6 @@ abstract class Model
     public function validateModel()
     {
         foreach ($this->rules() as $attribute => $rules) {
-        // echo '<pre>';
-        // var_dump($this->rules());
-        // echo '</pre>';
             // gán gtri vd: firstname vao $value
             $value = $this->{$attribute};
             // aray 2 rules la value
