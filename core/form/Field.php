@@ -29,7 +29,7 @@ class Field
             '<div class="form-group w-100">
                 <label class="form-label">%s</label>
                 <input type="%s" name="%s" value="%s" class="form-control form-control-lg %s" />
-                <div class="invalid-feedback">
+                <div class="invalid-feedback d-flex align-items-start">
                     %s
                 </div>
             </div>'

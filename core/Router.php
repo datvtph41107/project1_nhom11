@@ -30,18 +30,20 @@ class Router
         $this->response = $response;
     }
 
-    public function get($path, $callback, ?array $authMiddleware = [])
+    public function get($path, $callback, ?array $authMiddleware = [], ?array $checkAdmin = [])
     {
         $this->routes['get'][$path] = [
             $callback,
-            $authMiddleware
+            $authMiddleware,
+            $checkAdmin
         ];
     }
-    public function post($path, $callback, ?array $authMiddleware = [])
+    public function post($path, $callback, ?array $authMiddleware = [], ?array $checkAdmin = [])
     {
         $this->routes['post'][$path] =  [
             $callback,
-            $authMiddleware
+            $authMiddleware,
+            $checkAdmin
         ];;
     }
     // function resolve return tra ve du lieu
@@ -62,22 +64,18 @@ class Router
             $callback[0] = $controller;
 
             $getMiddleware = $this->routes['get'][$path][1] ?? [];
-            foreach ($getMiddleware as $value) {
-                $user = Application::$app->session->get('user');
-                $instance = new $value();
-                if (!isset($user) && $user == null) {
-                    if (Application::$app->userExists->isAdmin()) {
-                        $instance->isAdmin($this->response);
-                    } else {
-                        $instance->handle($this->response);
-                    }
-                } else {
-                    if (strpos($path, '/admin/') === 0) {
-                        $instance->isAdmin($this->response);
-                    } else {
-                        $instance->handle($this->response);
-                    }
+            $getAuthAdmin = $this->routes['get'][$path][2] ?? [];
+           
+            foreach ($getAuthAdmin as $admin) {
+                $instance = new $admin();
+                $userAdmin = Application::$app->session->get('userAdmin');
+                if (!$userAdmin) {
+                    $instance->checkAdmin($this->response);
                 }
+            }
+            foreach ($getMiddleware as $value) {
+                $instance = new $value();
+                $instance->handle($this->response);
             }
         }
         return call_user_func($callback, $this->request, $this->response);

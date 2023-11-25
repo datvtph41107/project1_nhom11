@@ -30,22 +30,42 @@
         <div class="right">
             <div class="d-flex">
                 <?php if (Application::isGuest()): ?>
-                    <div>
+                    <div class="dropdown">
+                        <button style="display: none;" disabled="disabled"></button>
+                        <!-- <button style="background-color: transparent;"></button> -->
                         <a href="/login" class="right-first">Đăng nhập</a>
                     </div>
-                    <div>
-                        <a href="/register" class="right-second">Đăng ký</a>
+                    <div class="cart-block" style="display: none;"></div>
+                    <div class="dropdown">
+                        <a href="/register" class="right-second">
+                            Đăng ký
+                        </a>
                     </div>
                 <?php else: ?>
                     <div class="dropdown" style="height: 48px;">
-                        <button style="height:100%;" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span style="margin-left: 6px;" ><?php echo Application::$app->userExists->getUserName() ?></span>
+                        <button style="border-radius: 12px; height:100%; background-color: rgba(255, 255, 255, 0.12); color: rgb(255, 255, 255); backdrop-filter: blur(20px)" class="display-border d-flex align-items-center btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img  style="height: 100%; border-radius: 30px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="img">
+                            <a style="margin-left: 6px;" ><?php echo Application::$app->userExists->getUserName() ?></a>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#"></a></li>
-                            <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                                <a style="padding-left: 4px;" class="dropdown-item" href="/profile">Thông tin cá nhân</a>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                </div>
+                                <a style="padding-left: 4px;" class="dropdown-item" href="/logout">Đăng xuất</a>
+                            </li>
                         </ul>
+                    </div>
+                    <div>
+                        <a href="/cart" style="border-radius: 12px;" class="cart-block ">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
                     </div>
                 <?php endif ?>
             </div>

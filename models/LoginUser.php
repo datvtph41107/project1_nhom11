@@ -23,7 +23,7 @@ class LoginUser extends Model
         $user = new User();
         $userQuery = $user->findOne(['email' => $this->email]);
         
-        if (!$user) {
+        if (!$userQuery) {
             $this->addError('email', 'User does not exists with this email');
             return false;
         }
@@ -31,7 +31,6 @@ class LoginUser extends Model
             $this->addError('password', 'password is incorrect');
             return false;
         }
-
         // var_dump($userQuery);
         return Application::$app->login($userQuery);
     }

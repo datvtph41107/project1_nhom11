@@ -1,0 +1,1 @@
+<h1>Delete Category</h1>

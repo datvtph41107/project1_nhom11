@@ -1,11 +1,3 @@
-<?php
-
-use app\core\Application;
-
-// echo '<pre>';
-//  var_dump(Application::$app->userExists);
-//  echo '</pre>';
- ?>
 <!doctype html>
 <html lang="en">
 
@@ -15,15 +7,21 @@ use app\core\Application;
     <title>Bootstrap demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- echo getcwd(); -->
-    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-element-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 </head>
 <body>
     <div class="app-center">
         <div class="app" style="width: 100%;">
             <?php
-                require 'part/header.php';
+                if ($_SERVER['REQUEST_URI'] == '/') {
+                    require 'part/header.php';
+                } else {
+                    require 'part/headerAuth.php';
+                }
             ?>
 
             {{content}}
@@ -78,32 +76,72 @@ use app\core\Application;
         </div>
     </div>
     <script>
-        const scrollDemo = document.querySelector(".app");
-        const output = document.querySelector("header");
-        const a = document.querySelectorAll("header a");
-        const search = document.querySelector("header .wrapper")
 
-        window.onscroll = function() {
-            scrollFunction()
-        };
+        const $ = document.querySelector.bind(document);
+        const $$ = document.querySelectorAll.bind(document);
+
+        const scrollDemo = $(".app");
+        const output = $("header");
+        const a = $$("header a");
+        const search = $("header .wrapper")
+        const infor = $(".dropdown button");
+        const cartBlock = $(".cart-block");
+        if (window.location.pathname === '/') {
+            window.onscroll = function() {
+                scrollFunction()
+            };
+        }
+        
 
         function scrollFunction() {
             if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
                 output.classList.remove('bg-transparent');
                 output.classList.add('bg-white');
+                infor.classList.add('infor-right-border');
+                cartBlock.classList.add('infor-right-border');
                 a.forEach((item) => {
                     item.classList.add('text-black')
                 })
                 search.classList.add("border");
             } else {
-                console.log(123);
                 a.forEach((item) => {
                     item.classList.remove('text-black')
                 })
                 output.classList.add('bg-transparent');
                 search.classList.remove("border");
+                infor.classList.remove("infor-right-border");
+                cartBlock.classList.remove("infor-right-border");
             }
         }
+        
+        
+        const slideImgs = $$('.container__slide-item');
+        let imgIndex = 2;
+        function slideShow() {
+            const slideImgFirst = $('.container__slide-item.first')
+            const slideImgSecond = $('.container__slide-item.second')
+            const slideImgThird = slideImgs[imgIndex] 
+            // 0,1,2--imgIndex
+            // -------------------slideImgs[imgIndex = 2] == same like contain in() container-slide-item second
+            const slideImgFourth = slideImgs[imgIndex === slideImgs.length -1 ?  0 : imgIndex + 1]
+            // ------------------------------NẾU imgIndex = slideImgs.length-1 = 13 nếu đúng thì lọt vào bằng 0 nếu sai thì lọt vào imgIndex + 1
+            slideImgFourth.classList.replace('fourth', 'third')
+            slideImgThird.classList.replace('third', 'second')
+            slideImgSecond.classList.replace('second', 'first')
+            slideImgFirst.classList.replace('first', 'fourth')
+            // slideImgFirst đang ở đầu tiên vào vòng lập đổi về fourth luôn
+            imgIndex++;
+            if(imgIndex >= slideImgs.length) {
+                imgIndex = 0;
+                // quay trở về cái đầu tiên và tiếp tục replace
+            }
+            // console.log(imgIndex)
+            // console.log(slideImgs.length) đếm từ 1 còn imgIndex đếm từ 0 từ vị trí đầu tiên first  
+            setTimeout(slideShow, 2000)
+            // khi refresh web vòng lập bắt đầu first biến thành fourth imgIndex=2 bằng với item third
+        }
+
+        slideShow();
     </script>                       
 </body>
 

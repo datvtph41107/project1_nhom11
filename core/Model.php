@@ -17,6 +17,13 @@ abstract class Model
         foreach ($data as $key => $value) {
             // kiểm tra thuộc tính của object registerModel
             if (property_exists($this, $key)) {
+                foreach ($_FILES as $keyFile => $file) {
+                    if ($file["error"] === UPLOAD_ERR_OK && is_uploaded_file($file["tmp_name"])) {
+                        $moveto = new ImageUploads($keyFile);
+                        $upload = $moveto->moveUpload();
+                        $this->{$keyFile} = $upload;
+                    }
+                }
                 // $this->{$key} là thuộc tính bên registerModel
                 $this->{$key} = $value;
             }
@@ -64,6 +71,7 @@ abstract class Model
                 }
                 if ($ruleName === self::RULE_UNIQUE) {
                     $className = $rule['class'];
+                    var_dump($className);
                     $uniqueAtrr = $rule['attribute'] ?? $attribute;
                     $tableName = $className::tableName();
                     $statement = Application::$app->db->prepare("SELECT * FROM $tableName WHERE $uniqueAtrr = :$uniqueAtrr");
