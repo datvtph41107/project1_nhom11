@@ -1,0 +1,53 @@
+<?php 
+namespace app\core\form;
+
+use app\core\Model;
+
+class FieldUpdate
+{
+    public const TYPE_TEXT = 'text';
+    public const TYPE_EMAIL = 'email';
+    public const TYPE_PASSWORD = 'password';
+    public const TYPE_NUMBER = 'number';
+
+    public string $type;
+    public Model $model;
+    public string $attribute;
+    public string $label;
+    public string $dataValue;
+
+    public function __construct(\app\core\Model $model, string $attribute, $queryData)
+    {
+        $this->type = self::TYPE_TEXT;
+        $this->model = $model;
+        $this->attribute = $attribute;
+        $this->label = ucfirst($attribute);
+        $this->dataValue = $queryData;
+    }
+
+    public function __toString()
+    {
+        return sprintf(
+            '<div class="form-group w-100">
+                <label class="form-label">%s</label>
+                <input type="%s" name="%s" value="%s" class="form-control form-control-lg %s" />
+                <div class="invalid-feedback d-flex align-items-start">
+                    %s
+                </div>
+            </div>'
+        , 
+            $this->label, 
+            $this->type,
+            $this->attribute, 
+            $this->dataValue,
+            $this->model->hasError($this->attribute) ? 'is-invalid' : '',
+            $this->model->getFirstError($this->attribute),
+        );
+    }
+
+    public function passwordFieldType()
+    {
+        $this->type = self::TYPE_PASSWORD;
+        return $this;
+    }
+}

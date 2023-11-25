@@ -90,9 +90,11 @@ class Application
         return true;
     }
 
-    public function isAdmin(DbModel $userChecking)
+    public function loginAdmin(DbModel $userChecking)
     {
-        $this->userExists = $userChecking;
+        $primaryKey = $userChecking->primaryKey();
+        $primaryValue = $userChecking->{$primaryKey};
+        $this->session->set('userAdmin', $primaryValue);
         return true;
     }
 

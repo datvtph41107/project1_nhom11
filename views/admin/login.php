@@ -3,8 +3,6 @@
 
 use app\core\Application;
 
-var_dump(Application::$app->userExists);
-
 ?>
 <?php $form = \app\core\form\Form::begin('', 'post') ?>
     <!-- Email input -->

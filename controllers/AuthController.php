@@ -8,6 +8,7 @@ use app\core\Controller;
 use app\core\Request;
 use app\core\Response;
 use app\models\LoginUser;
+use app\models\RegisterUser;
 use app\models\User;
 
 class AuthController extends Controller
@@ -85,11 +86,17 @@ class AuthController extends Controller
     public function profile()
     {
         return $this->render('profile');
-        // return Application::$app->controller->render('profile');
     }
+
     public function cart()
     {
         return $this->render('cart');
+        // return Application::$app->controller->render('profile');
+    }
+
+    public function product()
+    {
+        return $this->render('product');
         // return Application::$app->controller->render('profile');
     }
 }

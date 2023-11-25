@@ -1,7 +1,6 @@
 <?php 
 namespace app\models;
 
-use app\core\Application;
 use app\core\DbModel;
 
 class User extends DbModel
@@ -35,14 +34,6 @@ class User extends DbModel
         ];
     }
 
-    public function isAdmin(): bool
-    {
-        if (Application::$app->userExists->role === 1) {
-            return true;
-        }
-        return false;
-    }
-
     public function getUserName(): string
     {
         return $this->firstname.''.$this->lastname;
@@ -68,5 +59,4 @@ class User extends DbModel
             'confirmPassword' => [self::RULE_REQUIRE, [self::RULE_MATCH, 'match' => 'password']],
         ];
     }
-
 }
