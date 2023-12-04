@@ -87,7 +87,7 @@ class Application
         $primaryKey = $userChecking->primaryKey();
         $primaryValue = $userChecking->{$primaryKey};
         $this->session->set('user', $primaryValue);
-        return true;
+        return true;     
     }
 
     public function loginAdmin(DbModel $userChecking)
@@ -103,5 +103,6 @@ class Application
         $this->userExists = null;
         $this->session->remove('user');
         $this->session->remove('userAdmin');
+        $this->session->remove('savedData');
     }
 }

@@ -123,6 +123,7 @@ class Router
     protected function renderViewAdmin($view, $params)
     {
         foreach ($params as $key => $value) {
+            // $$key -> la mot bien de co the thanh $model
             $$key = $value;
         }
         ob_start();

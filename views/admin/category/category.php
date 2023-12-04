@@ -1,6 +1,27 @@
 <div class="pcoded-content bg-white mt-4 px-4" ">
     <h1 class="pt-4 fw-bold" style="font-weight: bold; padding: 0 30px; font-size: 30px;">Category Admin</h1>
     <div id="kt_app_content" class="app-content  flex-column-fluid " data-select2-id="select2-data-kt_app_content">
+    <?php
+        use app\core\Application;
+
+        if (Application::$app->session->getFlash('update')) {
+            ?>
+                <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">&times;</button>
+                    <span style="font-weight: bold; font-size: 16px;">success!</span>
+                    <span style="font-weight: bold; font-size: 16px;"><?php echo Application::$app->session->getFlash('update') ?></span>
+                </div>
+            <?php
+        }
+
+        if (Application::$app->session->getFlash('delete')) {
+            ?>
+                <div class="alert alert_success"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">&times;</button>
+                    <span style="font-weight: bold; font-size: 16px;">success!</span>
+                    <span style="font-weight: bold; font-size: 16px;"><?php echo Application::$app->session->getFlash('delete') ?></span>
+                </div>
+            <?php
+        }
+    ?>
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container  container-xxl " data-select2-id="select2-data-kt_app_content_container">
             <!--begin::Products-->
@@ -84,16 +105,16 @@
                                                 <td class="text-end pe-0"><?php echo $name ?></td>
                                                 
                                                 <td class="d-flex text-end">
-                                                    <a href="/admin-updatecategory">
+                                                    <a href="/admin-updatecategory?id=<?php echo $category_id ?>">
                                                         <button type="button" style="border-radius: 4px;" class="btn btn-primary px-4">
                                                             Sửa
                                                         </button>
                                                     </a>
-                                                    <form class="px-2" action="/admin-deleteCategory" method="post">
+                                                    <a class="px-2" href="/admin-deletecategory?id=<?php echo $category_id ?>">
                                                         <button type="button" style="border-radius: 4px;" class="btn btn-primary px-4 mx-2" onclick="return confirm('Are you sure you want to delete?')" value="">
                                                             Xóa
                                                         </button>
-                                                    </form>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         <?php

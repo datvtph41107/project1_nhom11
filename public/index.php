@@ -3,6 +3,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use app\controllers\AdminController;
 use app\controllers\AuthController;
+use app\controllers\CheckoutController;
+use app\controllers\PaymentController;
 use app\controllers\SiteController;
 use app\core\Application;
 use app\core\middlewares\AuthMiddleware;
@@ -28,10 +30,21 @@ $app = new Application(dirname(__DIR__), $config);
 $app->router->get('/', [SiteController::class, 'home']);
 $app->router->get('/contact', [SiteController::class, 'contact']);
 $app->router->post('/contact', [SiteController::class, 'handleContact']);
+$app->router->get('/profile', [SiteController::class, 'profile'], [AuthMiddleware::class]);
+$app->router->get('/cart', [SiteController::class, 'cart'], [AuthMiddleware::class]);
+$app->router->post('/cart', [SiteController::class, 'handleCart'], [AuthMiddleware::class]);
+$app->router->get('/checkout', [CheckoutController::class, 'order'], [AuthMiddleware::class]);
+$app->router->post('/checkout', [CheckoutController::class, 'checkout'], [AuthMiddleware::class]);
+$app->router->post('/checkout-update', [CheckoutController::class, 'orderUpdate'], [AuthMiddleware::class]);
+$app->router->get('/checkout/success', [CheckoutController::class, 'success'], [AuthMiddleware::class]);
+$app->router->get('/checkout/failure', [CheckoutController::class, 'failure'], [AuthMiddleware::class]);
+$app->router->get('/payments', [PaymentController::class, 'paymentHistory'], [AuthMiddleware::class]);
+
+$app->router->get('/product', [SiteController::class, 'product']);
+$app->router->post('/product', [SiteController::class, 'handleProduct']);
+$app->router->get('/product-detail', [SiteController::class, 'productDetail']);
+$app->router->post('/product-detail', [SiteController::class, 'handleProductDetail'], [AuthMiddleware::class]);
 // Auth Controller
-$app->router->get('/profile', [AuthController::class, 'profile'], [AuthMiddleware::class]);
-$app->router->get('/cart', [AuthController::class, 'cart'], [AuthMiddleware::class]);
-$app->router->get('/product', [AuthController::class, 'product']);
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
 $app->router->get('/register', [AuthController::class, 'register']);
@@ -47,6 +60,7 @@ $app->router->get('/admin-adduser', [AdminController::class, 'addUser'], [AuthMi
 $app->router->post('/admin-adduser', [AdminController::class, 'addUser'], [AuthMiddleware::class], [IsAdmin::class]);
 $app->router->get('/admin-updateuser', [AdminController::class, 'updateUser'], [AuthMiddleware::class], [IsAdmin::class]);
 $app->router->post('/admin-updateuser', [AdminController::class, 'updateUser'], [AuthMiddleware::class], [IsAdmin::class]);
+$app->router->get('/admin-deleteuser', [AdminController::class, 'deleteUser'], [AuthMiddleware::class], [IsAdmin::class]);
 $app->router->post('/admin-deleteuser', [AdminController::class, 'deleteUser'], [AuthMiddleware::class], [IsAdmin::class]);
 // Product Admin
 $app->router->get('/admin-product', [AdminController::class, 'product'], [AuthMiddleware::class], [IsAdmin::class]);
@@ -62,6 +76,7 @@ $app->router->get('/admin-addcategory', [AdminController::class, 'addCategory'],
 $app->router->post('/admin-addcategory', [AdminController::class, 'addcategory'], [AuthMiddleware::class], [IsAdmin::class]);
 $app->router->get('/admin-updatecategory', [AdminController::class, 'updateCategory'], [AuthMiddleware::class], [IsAdmin::class]);
 $app->router->post('/admin-updatecategory', [AdminController::class, 'updateCategory'], [AuthMiddleware::class], [IsAdmin::class]);
+$app->router->get('/admin-deletecategory', [AdminController::class, 'deleteCategory'], [AuthMiddleware::class], [IsAdmin::class]);
 $app->router->post('/admin-deletecategory', [AdminController::class, 'deleteCategory'], [AuthMiddleware::class], [IsAdmin::class]);
 
 $app->run();

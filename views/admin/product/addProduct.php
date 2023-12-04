@@ -133,6 +133,16 @@
                                 <hr>
 
                             </div>
+                            
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body d-flex flex-column text-start">
+                                <h3 style="font-weight: bold;">Gender</h3>
+                                <select name="gender" style="width: 100%; padding:0.5rem 1rem; border-radius: 6px;" class="form-select-cate form-select-solid select2-hidden-accessible" data-control="select2" data-hide-search="true">
+                                    <option selected value="men">Nam</option>
+                                    <option value="women">Nữ</option>
+                                </select>
+                            </div>
                         </div>
                         <div style="float: inline-end;">
                             <button type="submit" class="btn btn-primary">Save Change</button>
