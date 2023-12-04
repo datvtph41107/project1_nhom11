@@ -15,7 +15,7 @@ class Category extends DbModel
 
     public function primaryKey(): string
     {
-        return 'id';
+        return 'category_id';
     }
 
     public function attributes(): array

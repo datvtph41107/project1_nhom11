@@ -8,6 +8,7 @@ use app\models\AddCategory;
 use app\models\Category;
 use app\models\LoginAdmin;
 use app\models\Product;
+use app\models\User;
 
 class AdminController extends Controller
 {
@@ -48,23 +49,46 @@ class AdminController extends Controller
     // User
     public function user()
     {
+        $user = new User();
+        $result = $user->fetchAll($user->attributes());
         $this->setLayout('adminPannel');
-        return $this->renderAdmin('user/user');
+        return $this->renderAdmin('user/user', [
+            'model' => $user,
+            'result' => $result
+        ]);
     }
-    public function addUser()
+    public function addUser(Request $request, Response $response)
     {
+        $addUser = new User();
+        if ($request->isPost()) {
+            $addUser->loadData($request->getBody());
+            // $addUser->category_category_id = intval($addUser->category_category_id);
+            // var_dump($addUser->category_category_id);
+            // exit;
+            if ($addUser->validateModel() && $addUser->save() ) {
+                Application::$app->session->setFlash('success', 'Thêm thành công !!!');
+                $response->redirect('admin-adduser');
+                exit;
+            }
+            $this->setLayout('adminPannel');
+            return $this->renderAdmin('user/addUser', [
+                'model' => $addUser,
+            ]);
+        }
         $this->setLayout('adminPannel');
-        return $this->renderAdmin('product/addUser');
+        return $this->renderAdmin('user/addUser', [
+            'model' => $addUser,
+        ]);
     }
     public function updateUser()
     {
         $this->setLayout('adminPannel');
-        return $this->renderAdmin('product/addUser');
+        return $this->renderAdmin('user/addUser');
     }
     public function deleteUser()
     {
         $this->setLayout('adminPannel');
-        return $this->renderAdmin('product/addUser');
+        return $this->renderAdmin('user/addUser');
     }
 
     // Product
@@ -173,42 +197,28 @@ class AdminController extends Controller
     }
     public function updateCategory(Request $request, Response $response)
     {
-        $addCategory = new Category();
+        $updateCategory = new Category();
+        $result = $updateCategory->findOne(['category_id' => $_GET['id']]);
         if ($request->isPost()) {
-            $addCategory->loadData($request->getBody());
-            if ($addCategory->validateModel() && $addCategory->save()) {
-                Application::$app->session->setFlash('success', 'Thêm thành công !!!');
-                $response->redirect('admin-addcategory');
+            $updateCategory->loadData($request->getBody());
+            if ($updateCategory->validateModel() && $updateCategory->update(['category_id' => $result->category_id])) {
+                Application::$app->session->setFlash('update', 'Cập nhật thành công !!!');
+                $response->redirect('admin-category');
                 exit;
             }
-            $this->setLayout('adminPannel');
-            return $this->renderAdmin('category/updateCategory', [
-                'model' => $addCategory,
-            ]);
         }
         $this->setLayout('adminPannel');
         return $this->renderAdmin('category/updateCategory', [
-            'model' => $addCategory,
+            'model' => $updateCategory,
+            'result' => $result
         ]);
     }
     public function deleteCategory(Request $request, Response $response)
     {
-        $addCategory = new Category();
-        if ($request->isPost()) {
-            $addCategory->loadData($request->getBody());
-            if ($addCategory->validateModel() && $addCategory->save()) {
-                Application::$app->session->setFlash('success', 'Thêm thành công !!!');
-                $response->redirect('admin-addcategory');
-                exit;
-            }
-            $this->setLayout('adminPannel');
-            return $this->renderAdmin('category/deleteCategory', [
-                'model' => $addCategory,
-            ]);
+        $deleteCategory = new Category();
+        if ($deleteCategory->delete(['category_id' => $_GET['id']])) {
+            Application::$app->session->setFlash('delete', 'Xóa dữ liệu thành công');
+            $response->redirect('/admin-category');
         }
-        $this->setLayout('adminPannel');
-        return $this->renderAdmin('category/deleteCategory', [
-            'model' => $addCategory,
-        ]);
     }
 }

@@ -13,6 +13,7 @@ class Product extends DbModel
     public string $price = '';
     public string $product_image = '';
     public string $status = '';
+    public string $gender = '';
     public $category_category_id;
 
     public function tableName(): string
@@ -22,20 +23,20 @@ class Product extends DbModel
 
     public function primaryKey(): string
     {
-        return 'id';
+        return 'product_id';
     }
 
     // Để lấy tên bảng và giá trị
     public function attributes(): array
     {
         return [
-            'product_name', 'description', 'price', 'status', 'product_image', 'category_category_id'
+            'product_name', 'description', 'price', 'status', 'gender', 'product_image', 'category_category_id'
         ];
     }
 
     public function getUserName(): string
     {
-        return $this->product_name;
+        return 'category_category_id';
     }
 
     public function save()

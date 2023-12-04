@@ -34,7 +34,7 @@
                             <!--end::Select2-->
                         </div>
                         <!--begin::Add product-->
-                        <a href="" style="border-radius: 12px;" class="d-flex align-items-center btn-admin w-100 fw-bold btn btn-primary">
+                        <a href="/admin-adduser" style="border-radius: 12px;" class="d-flex align-items-center btn-admin w-100 fw-bold btn btn-primary">
                             Add User
                         </a>
                         <!--end::Add product-->
@@ -62,57 +62,67 @@
                                         <th class="text-end min-w-100px sorting" tabindex="0" rowspan="1" colspan="1" style="width: 125.412px;">
                                             EMAIL
                                         </th>
-                                        <th class="text-end min-w-70px sorting" tabindex="0" rowspan="1" colspan="1"  style="width: 113.05px;">
+                                        <th class="text-end min-w-70px sorting" tabindex="0" rowspan="1" colspan="1" style="width: 113.05px;">
                                             ID
                                         </th>
-                                        <th class="text-end min-w-100px sorting" tabindex="0" rowspan="1" colspan="1"  style="width: 125.412px;">
+                                        <th class="text-end min-w-70px sorting" tabindex="0" rowspan="1" colspan="1" style="width: 113.05px;">
+                                            ROLE
+                                        </th>
+                                        <th class="text-end min-w-100px sorting" tabindex="0" rowspan="1" colspan="1" style="width: 125.412px;">
                                             CREATED DATE
                                         </th>
-                                        <th class="text-end min-w-70px sorting_disabled" rowspan="1" colspan="1"  style="width: 119.775px;">
+                                        <th class="text-end min-w-70px sorting_disabled" rowspan="1" colspan="1" style="width: 119.775px;">
                                             Actions
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody class="fw-semibold text-gray-600">
-                                    <tr class="odd">
-                                        <td>
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="1">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <!--begin::Thumbnail-->
-                                                <!--end::Thumbnail-->
-                                                <div class="ms-5">
-                                                    <!--begin::Title-->
-                                                    <a href="" style="font-weight: bold;" class="fw-bold text-gray-800 text-hover-primary fs-5 fw-bold" data-kt-ecommerce-product-filter="product_name">Product 1</a>
-                                                    <!--end::Title-->
+                                    <?php
+                                    foreach ($result as $key => $value) {
+                                    ?>
+                                        <tr class="odd">
+                                            <td>
+                                                <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                    <input class="form-check-input" type="checkbox" value="1">
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-end pe-0">
-                                            <span class="fw-bold">01869008</span>
-                                        </td>
-                                        <td class="text-end pe-0" data-order="2">
-                                            <span class="badge badge-light-warning">Low stock</span>
-                                            <span class="fw-bold text-warning ms-3">2</span>
-                                        </td>
-                                        <td class="text-end pe-0">142.00</td>
-                                        
-                                        <td class="d-flex text-end">
-                                            <a href="/admin-updateuser">
-                                                <button type="button" style="border-radius: 4px;" class="btn btn-primary px-4">
-                                                    Sửa
-                                                </button>
-                                            </a>
-                                            <form class="px-2" action="/admin-deleteCategory" method="post">
-                                                <button type="button" style="border-radius: 4px;" class="btn btn-primary px-4 mx-2" onclick="return confirm('Are you sure you want to delete?')" value="">
-                                                    Xóa
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <!--begin::Thumbnail-->
+                                                    <!--end::Thumbnail-->
+                                                    <div class="ms-5">
+                                                        <!--begin::Title-->
+                                                        <a href="" style="font-weight: bold;" class="fw-bold text-gray-800 text-hover-primary fs-5 fw-bold" data-kt-ecommerce-product-filter="product_name"><?php echo $value['firstname'] . ' ' . $value['lastname'] ?></a>
+                                                        <!--end::Title-->
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-end pe-0">
+                                                <span class="fw-bold"><?php echo $value['email'] ?></span>
+                                            </td>
+                                            <td class="text-end pe-0" data-order="2">
+                                                <span class="fw-bold">000<?php echo $value['id'] ?></span>
+                                            </td>
+                                            <td class="text-end pe-0"><?php echo $value['role'] === 1 ? 'admin' : 'customer' ?></td>
+                                            <td class="text-end pe-0"><?php echo $value['created_at'] ?></td>
+
+                                            <td class="d-flex text-end">
+                                                <a href="/admin-updateuser">
+                                                    <button type="button" style="border-radius: 4px;" class="btn btn-primary px-4">
+                                                        Sửa
+                                                    </button>
+                                                </a>
+                                                <form class="px-2" action="/admin-deleteCategory" method="post">
+                                                    <button type="button" style="border-radius: 4px;" class="btn btn-primary px-4 mx-2" onclick="return confirm('Are you sure you want to delete?')" value="">
+                                                        Xóa
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+
+                                    <?php
+                                    }
+                                    ?>
 
                                 </tbody>
                             </table>
@@ -120,11 +130,11 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start">
                                 <div class="dataTables_length" id="kt_ecommerce_products_table_length"><label><select name="kt_ecommerce_products_table_length" aria-controls="kt_ecommerce_products_table" class="form-select form-select-sm form-select-solid">
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select></label>
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select></label>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">

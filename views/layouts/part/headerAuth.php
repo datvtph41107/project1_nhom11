@@ -1,10 +1,10 @@
-<header class="bg-white d-flex" style="height: 72px; width: 100%; padding: 0 32px;">
+<header class="bg-white d-flex" style="height: 72px; width: 100%; padding: 0 32px; position: sticky;">
     <div class="d-flex align-items-center justify-content-between" style="width: 100%;">
         <div class="d-flex" style=" height: 100%; ">
             <a href="/" class="d-flex align-items-center" style="    margin-right: 52px;">
                 <div class="logo-head" style="height: 115px;" >
                     <img class="h-100" src="assets/image/logo.png" alt="">
-                    <span>Dress in the colors of yourself</span>
+                    <span style="color: black;">Dress in the colors of yourself</span>
                 </div>
                 <!-- <span class="logo-title">OpenShop</span> -->
             </a>
@@ -27,7 +27,7 @@
             <div class="icon">
                 <i class="fa-solid fa-magnifying-glass icon-move"></i>
             </div>
-            <input class="search-input" placeholder="Tìm kiếm bộ sưu tập của bạn" />
+            <input style="color: black;" class="search-input" placeholder="Tìm kiếm bộ sưu tập của bạn" />
             <div class="icon-right">
                 <div class="background">/</div>
             </div>
@@ -40,11 +40,11 @@
                     <div class="dropdown">
                         <button style="display: none;" disabled="disabled"></button>
                         <!-- <button style="background-color: transparent;"></button> -->
-                        <a href="/login" class="right-first">Đăng nhập</a>
+                        <a href="/login" style="color: black;" class="right-first">Đăng nhập</a>
                     </div>
                     <div class="cart-block" style="display: none;"></div>
                     <div class="dropdown">
-                        <a href="/register" class="right-second">
+                        <a href="/register" style="color: black;" class="right-second">
                             Đăng ký
                         </a>
                     </div>
