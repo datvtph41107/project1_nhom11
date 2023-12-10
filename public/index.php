@@ -28,9 +28,11 @@ $app = new Application(dirname(__DIR__), $config);
 
 // method param 2 se duoc goi nhu la 1 bien tinh trong call_user_function
 $app->router->get('/', [SiteController::class, 'home']);
+$app->router->post('/', [SiteController::class, 'handleHome']);
 $app->router->get('/contact', [SiteController::class, 'contact']);
 $app->router->post('/contact', [SiteController::class, 'handleContact']);
 $app->router->get('/profile', [SiteController::class, 'profile'], [AuthMiddleware::class]);
+$app->router->post('/profile', [SiteController::class, 'profile'], [AuthMiddleware::class]);
 $app->router->get('/cart', [SiteController::class, 'cart'], [AuthMiddleware::class]);
 $app->router->post('/cart', [SiteController::class, 'handleCart'], [AuthMiddleware::class]);
 $app->router->get('/checkout', [CheckoutController::class, 'order'], [AuthMiddleware::class]);
@@ -39,6 +41,7 @@ $app->router->post('/checkout-update', [CheckoutController::class, 'orderUpdate'
 $app->router->get('/checkout/success', [CheckoutController::class, 'success'], [AuthMiddleware::class]);
 $app->router->get('/checkout/failure', [CheckoutController::class, 'failure'], [AuthMiddleware::class]);
 $app->router->get('/payments', [PaymentController::class, 'paymentHistory'], [AuthMiddleware::class]);
+$app->router->get('/payments-detail', [PaymentController::class, 'paymentDetail'], [AuthMiddleware::class]);
 
 $app->router->get('/product', [SiteController::class, 'product']);
 $app->router->post('/product', [SiteController::class, 'handleProduct']);

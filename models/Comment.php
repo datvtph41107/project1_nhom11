@@ -5,28 +5,16 @@ use app\core\Application;
 use app\core\DbModel;
 use app\core\Model;
 use app\core\Response;
-use DateTime;
 
-class Orders extends DbModel
+class Comment extends DbModel
 {
-    public const STATUS_UNPAID = 'unpaid';
-    public const STATUS_PAID= 'paid';
-    public const STATUS_COMPLETE= 'completed';
-    // thuộc tính của object register model trùng với key trong loadData($data)
-    public $total_price;
-    public string $status = '';
-    public $created_by;
-
-    public function __construct( $total = null, $created_by = null)
-    {
-        $this->total_price = $total;
-        $this->status = self::STATUS_UNPAID;
-        $this->created_by = $created_by;
-    }
+    public $user_user_id;
+    public $product_id;
+    public string $message = '';
 
     public function tableName(): string
     {
-        return 'orders';
+        return 'comment';
     }
 
     public function primaryKey(): string
@@ -38,7 +26,7 @@ class Orders extends DbModel
     public function attributes(): array
     {
         return [
-            'total_price', 'status', 'created_by',
+            'user_user_id', 'product_id', 'message'
         ];
     }
 

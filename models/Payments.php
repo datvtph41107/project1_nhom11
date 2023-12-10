@@ -16,13 +16,19 @@ class Payments extends DbModel
     public string $status = '';
     public string $type = '';
     public $order_order_id;
+    public $created_by;
+    public $session_id;
+    public $session_uri;
 
-    public function __construct($total, $status, $order_detail_id, $type)
+    public function __construct(?float $total,?int $order_detail_id,?string $type,?int $created_by, ?string $session_id, ?string $session_uri)
     {
         $this->amount = $total;
-        $this->status = $status;
+        $this->status = self::STATUS_PENDING;
         $this->order_order_id = $order_detail_id;
         $this->type = $type;
+        $this->created_by = $created_by;
+        $this->session_id = $session_id;
+        $this->session_uri = $session_uri;
     }
 
     public function tableName(): string
@@ -39,7 +45,7 @@ class Payments extends DbModel
     public function attributes(): array
     {
         return [
-            'amount', 'status', 'type', 'order_order_id'
+            'amount', 'status', 'type', 'order_order_id', 'created_by', 'session_id', 'session_uri'
         ];
     }
 

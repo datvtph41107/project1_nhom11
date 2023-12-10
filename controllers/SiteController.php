@@ -8,21 +8,57 @@ use app\core\Request;
 use app\core\Response;
 use app\models\Cart;
 use app\models\Category;
+use app\models\Comment;
+use app\models\OrderItem;
 use app\models\Product;
+use app\models\User;
 
 class SiteController extends Controller
 {
     public function home()
     {
         $product = new Product();
+
         $result = $product->fetchAll($product->attributes());
-        // $params = [
-        //     'name' => "TheCodeholic"
-        // ];
         return $this->render('home', [
             'model' => $result,
         ]);
     }
+
+    public function handleHome()
+    {
+        $product = new Product();
+        if (isset($_POST['debounceValue'])) {
+            $debounceValue = $_POST['debounceValue'];
+            $search = $product->fetchSearch($debounceValue);
+            if (empty($search)) {
+                $jsonResult = json_encode($search);
+                echo $jsonResult;
+            }
+        }
+        if (isset($search)) {
+            $jsonData = []; // Mảng để chứa dữ liệu để encode sang JSON
+            foreach ($search as $key => $value) {
+                extract($value);
+                // Tạo một mảng mới chứa dữ liệu của mỗi sản phẩm
+                $productData = [
+                    'product_image' => $product_image,
+                    'product_name' => $product_name,
+                    'description' => $description,
+                    'price' => $price
+                ];
+                // Thêm mảng dữ liệu của mỗi sản phẩm vào mảng chính
+                $jsonData[] = $productData;
+            }
+
+            // Chuyển đổi mảng thành chuỗi JSON
+            $jsonString = json_encode($jsonData);
+
+            // In chuỗi JSON hoặc truyền nó vào JavaScript để sử dụng
+            echo $jsonString;
+        }
+    }
+
     public function contact()
     {
         return $this->render('contact');
@@ -35,9 +71,20 @@ class SiteController extends Controller
         return 'handling Submit data';
     }
 
-    public function profile()
+    public function profile(Request $request, Response $response)
     {
-        return $this->render('profile');
+        $user = new User();
+        $result = $user->fetch(['id' => Application::$app->userExists->id]);
+        if ($request->isPost()) {
+            $user->loadData($request->getBody());
+            $user->password = $result->password;
+            $user->update(['id' => Application::$app->userExists->id]);
+        }
+        return $this->render('profile', [
+            'model' => $user,
+            'infor' => $result,
+
+        ]);
     }
 
     public function cart()
@@ -115,7 +162,7 @@ class SiteController extends Controller
         if ($request->isPost()) {
             $render = $product->fetchFillter($dataGender, intval($dataCategoryId));
             foreach ($render as $key => $value) {
-            ?>
+?>
                 <a href="/product-detail?id=<?php echo $value['product_id'] ?>">
                     <div class="col pb-4 mb-2">
                         <div class="card" style="width: 100%; border: none;">
@@ -133,24 +180,60 @@ class SiteController extends Controller
                         </div>
                     </div>
                 </a>
-            <?php
+<?php
             }
         }
     }
 
-    public function productDetail()
+    public function productDetail(Request $request)
     {
         $prductDetail = new Product();
+        $orderItems = new OrderItem();
         $result = $prductDetail->findOne(['product_id' => $_GET['id']]);
-
+        // $orderItem = $orderItems->findOne(['product_id' => $_GET['id']]);
+        $order = $orderItems->findAll($_GET['id']);
+        $message = new Comment();
+        $mess = $message->fetchArr(['user_user_id' => Application::$app->userExists->id, 'product_id' => $_GET['id']]);
         return $this->render('productDetail', [
             'model' => $result,
+            'orderItem' => $order,
+            'message' => $mess
         ]);
     }
 
     public function handleProductDetail(Request $request, Response $response)
     {
         $requestData = json_decode(file_get_contents('php://input'), true);
+        $checkCommentPost = $requestData['message'] ?? false;
+        $content = $requestData['content'] ?? '';
+        $id = intval($requestData['id']) ?? false;
+        $jsonData = [];
+
+        if ($checkCommentPost) {
+            $comment = new Comment();
+            if ($request->isPost()) {
+                $user_id = Application::$app->userExists->id;
+                $comment->loadData($request->getBody());
+                $comment->user_user_id = $user_id;
+                $comment->product_id = $id;
+                $comment->message = $content;
+                $comment->save();
+
+                $result = $comment->fetchArr(['user_user_id' => $user_id, 'product_id' => $_GET['id']]);
+                foreach ($result as $value) {
+                    $messageData = [
+                        'message' => $value['message'],
+                    ];
+                    $jsonData[] = $messageData;
+                }
+                // Thêm mảng dữ liệu của mỗi sản phẩm vào mảng chính
+                $jsonString = json_encode($jsonData);
+                // In chuỗi JSON hoặc truyền nó vào JavaScript để sử dụng
+                echo $jsonString;
+                exit;
+            }
+        }
+
         $idProduct = intval($requestData['id']);
         $quantity = intval($requestData['quantity']);
         // Rest of your PHP code...

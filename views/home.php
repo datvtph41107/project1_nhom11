@@ -85,13 +85,13 @@
                         </a>
                     </div>
                     <div class="px-4 text-center">
-                    <swiper-container class="mySwiper mt-4" pagination="true" pagination-clickable="true" slides-per-view="5" space-between="30" free-mode="true">
+                    <swiper-container class="mySwiper mt-4" pagination="true" pagination-clickable="true" slides-per-view="5" space-between="20" free-mode="true">
                         <?php
                         foreach ($model as $key => $value2) {
                         ?>
                             <swiper-slide>
                                 <a href="/product-detail?id=<?php echo $value2['product_id'] ?>">
-                                    <div class="card" style="width: 18rem;">
+                                    <div class="card" >
                                         <img src="<?php echo $value2['product_image'] ?>" class="card-img-top" alt="...">
                                         <div class="card-body">
                                             <div class="product-description mt-2">
@@ -99,7 +99,7 @@
                                                     <div class="d-flex flex-column align-items-start">
                                                         <h6 style="color: #E22A19;" class="fw-bold">Bản giới hạn</h6>
                                                         <h5 style="color: black; margin-bottom: 4px;" class="fw-4"><?php $value2['product_name'] ?></h5>
-                                                        <span style="color: #707072; margin-bottom: 8px;"><?php echo $value2['description'] ?></span>
+                                                        <span style="color: #707072; margin-bottom: 8px;display: flex; text-align: left; overflow: hidden; display: -webkit-box; text-overflow: ellipsis; -webkit-box-orient: vertical; -webkit-line-clamp: 1;" ><?php echo $value2['description'] ?></span>
                                                         <span><?php echo $value2['price'] ?></span>
                                                     </div>
                                                 </div>

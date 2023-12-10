@@ -84,7 +84,6 @@
         const $$ = document.querySelectorAll.bind(document);
         const scrollDemo = $(".app");
         const output = $("header");
-        const a = $$("header a");
         const search = $("header .wrapper")
         const infor = $(".dropdown button");
         const cartBlock = $(".cart-block");
@@ -93,17 +92,165 @@
         const cartQuantity = $$(".cart-quantity");
         const priceCartChange = $('.price-change');
         const priceTotal = $('.price-total');
-        const cartCenter = $$('.cart-center');
         const loadingIndicator = $(".loading-indicator");
+        const fillterContainer = $(".filter-container");
+        const searchInput = $(".search-input");
+        const searchBar = $(".search-bar");
+        const containSearch = $(".contain-search");
+        const a = $$("header a");
+        const cartCenter = $$('.cart-center');
+        const categoryFilter = $$(".category-filter");
+        const checkFilter = $$(".filter-check");
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
         const productGender = urlParams.get('gender');
-        const fillterContainer = $(".filter-container");
 
-        const categoryFilter = $$(".category-filter");
-        const checkFilter = $$(".filter-check");
-        // console.log(checkFilter);
-        // scroll header change
+        const updateDebounce = debounced(text => {
+            var searchXhr = new XMLHttpRequest();
+            var formData = new FormData();
+
+            formData.append('debounceValue', text);
+
+            searchXhr.open("POST", "", true);
+            searchXhr.onload = function() {
+                if (searchXhr.readyState === XMLHttpRequest.DONE) {
+                    if (searchXhr.status === 200) {
+                        let data = searchXhr.response;
+                        let dataParse = JSON.parse(data)
+                        searchBar.style.display = 'block';
+                        let html = '';
+                        if (dataParse.length === 0 || text === '') {
+                            searchBar.style.display = 'none';
+                        }
+                        dataParse.forEach(product => {
+                            html += `
+                            <div class="contain-main d-flex justify-content-between p-2">
+                                <div class="d-flex">
+                                    <div class="">
+                                        <img style="height: 80px;" src="${product.product_image}" alt="">
+                                    </div>
+                                    <div class="ps-2">
+                                        <h5 class="bold text-black mb-0" style="font-size: 16px;">${product.product_name}</h5>
+                                        <span class="bold" style="font-size: 14px; color: #707072;">${product.description}</span>
+                                        <h4 class="text-black pt-3" style="font-size: 16px;">${product.price}đ</h4>
+                                    </div>
+                                </div>
+                                <div class="pe-4">
+                                    <h4 class="" style="font-size: 14px;  color: #707072;">Top suggestion</h4>
+                                    <h4 class="text-black" style="font-size: 20px;">${product.product_name}</h4>
+                                </div>
+                            </div>
+                        `;
+                        });
+                        // Gán chuỗi HTML vào containSearch
+                        containSearch.innerHTML = html;
+
+                        if (dataParse.length === 0) {
+                            searchBar.style.display = 'none';
+                        }
+                    }
+                }
+            };
+            searchXhr.onerror = function() {
+                console.error("Request failed");
+            };
+            searchXhr.send(formData);
+        }, 500);
+
+        searchInput.addEventListener('input', e => {
+            updateDebounce(e.target.value);
+        });
+
+        function debounced(cb, delay) {
+            let timeout;
+            // tra ve mot function
+            // ...args chua gtri truyen trong tham so updateDebounce
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    // cb= text => {console.log(text);}); => text la tham so chua args
+                    cb(...args);
+                }, delay)
+            }
+        };
+
+
+        const formm = $(".form_comment");
+        const sendBtn = $(".send-btn");
+        const inputField = $(".input-field");
+        const chatBodx = $(".chat-box");
+        const message = $(".text-mess");
+
+        formm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Chặn sự kiện mặc định của form
+            // Thực hện các bước xử lý của bạn, ví dụ: gửi yêu cầu Ajax
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/product-detail', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        inputField.value = '';
+                        let data = xhr.response;
+                        let dataParse = JSON.parse(data)
+                        let html = '';
+                        dataParse.forEach(product => {
+                            html += `
+                            <div class="d-flex flex-start mt-4">
+                                <img class="rounded-circle shadow-1-strong me-3" style="width: 40px; height: 40px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="avatar" width="65" height="65" />
+                                <div class="flex-grow-1 flex-shrink-1">
+                                    <div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-1">
+                                                Votien dat<span class="small">' . $row['created_at'] . ' - ' . $row['id'] . ' hours ago</span>
+                                            </p>
+                                            <a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
+                                        </div>
+                                        <p class="small mb-0" style="width: 700px;">
+                                            ${product.message}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        });
+                        // Gán chuỗi HTML vào containSearch
+                        chatBodx.innerHTML = html;
+                        scrollToBottom()
+                    } else {
+                        // Xử lý phản hồi lỗi
+                        console.log('Request failed with status:', xhr.status);
+                    }
+                }
+            };
+            // Gửi dữ liệu form dưới dạng JSON
+            const formData = {
+                message: true,
+                content: inputField.value,
+                id: productId
+            };
+            xhr.send(JSON.stringify(formData));
+        });
+        function fetchData() {
+            count++;
+            let xhrFetch = new XMLHttpRequest();
+            xhrFetch.open("POST", "/product-detail", true);
+            xhrFetch.onload = () => {
+                if (xhrFetch.readyState === XMLHttpRequest.DONE) {
+                    if (xhrFetch.status === 200) {
+                        let data = xhrFetch.response;
+                        chatBox.innerHTML = data;
+                        scrollToBottom()
+                    }
+                }
+            };
+            xhrFetch.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhrFetch.send("incoming_id="+incoming_id + "&another_data=" + count);
+        }
+        function scrollToBottom() {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
         categoryFilter.forEach((category) => {
             category.addEventListener('click', (e) => {
                 const categoryId = e.target.id;
@@ -131,10 +278,9 @@
                         }
                     }
                 }
-
                 const formData = {
                     idCategoryValue: categoryId,
-                    idGender: checkedElements ,
+                    idGender: checkedElements,
                 };
                 xhrRequest.send(JSON.stringify(formData));
             })
@@ -145,12 +291,10 @@
                 const checkedElements = Array.from(checkFilter)
                     .filter((checkbox) => checkbox.checked)
                     .map((checkbox) => checkbox.id);
-
                 // `checkedElements` giờ đây chứa mảng các phần tử được chọn
                 const xhrCheck = new XMLHttpRequest();
                 xhrCheck.open('POST', '/product', true);
                 xhrCheck.setRequestHeader('Content-Type', 'application/json');
-
                 xhrCheck.onload = function() {
                     if (xhrCheck.readyState === XMLHttpRequest.DONE) {
                         if (xhrCheck.status === 200) {
@@ -169,7 +313,7 @@
                     }
                 }
                 const formData = {
-                    idGender: checkedElements ,
+                    idGender: checkedElements,
                 };
                 xhrCheck.send(JSON.stringify(formData));
             })
@@ -177,7 +321,6 @@
 
         if (window.location.pathname === '/') {
             window.onscroll = function() {
-                slideShow();
                 scrollFunction()
             };
         } else {
@@ -185,10 +328,8 @@
                 quantity.addEventListener('change', function(e) {
                     const productCartId = e.target.parentElement.parentElement.parentElement.id;
                     const productCartItem = e.target.parentElement.parentElement.parentElement;
-
                     const cartQuantityValue = quantity.value;
                     const childrenCartItem = productCartItem.querySelector('.price-change');
-
                     const xhrRefresh = new XMLHttpRequest();
                     xhrRefresh.open('POST', '/cart', true);
                     xhrRefresh.setRequestHeader('Content-Type', 'application/json');
@@ -219,18 +360,15 @@
             document.getElementById('productForm').addEventListener('submit', function(event) {
                 event.preventDefault(); // Chặn sự kiện mặc định của form
                 const quantity = document.getElementById('quantityInput').value;
-
-                // Thực hiện các bước xử lý của bạn, ví dụ: gửi yêu cầu Ajax
+                // Thực hện các bước xử lý của bạn, ví dụ: gửi yêu cầu Ajax
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/product-detail', true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
-
                 xhr.onload = function() {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
                             const responseData = xhr.responseText;
                             const parsedData = JSON.parse(responseData);
-
                             if (parsedData.redirect) {
                                 // Chuyển hướng đến URL được chỉ định
                                 window.location.href = parsedData.redirect;
@@ -249,10 +387,8 @@
                             // Xử lý phản hồi lỗi
                             console.log('Request failed with status:', xhr.status);
                         }
-
                     }
                 };
-
                 // Gửi dữ liệu form dưới dạng JSON
                 const formData = {
                     id: productId,
@@ -260,8 +396,6 @@
                 };
                 xhr.send(JSON.stringify(formData));
             });
-
-
         }
 
         function showLoadingIndicator() {
@@ -282,6 +416,7 @@
             if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
                 output.classList.remove('bg-transparent');
                 output.classList.add('bg-white');
+                searchInput.classList.add("text-black");
                 infor.classList.add('infor-right-border');
                 cartBlock.classList.add('infor-right-border');
                 a.forEach((item) => {
@@ -293,13 +428,13 @@
                     item.classList.remove('text-black')
                 })
                 output.classList.add('bg-transparent');
+                searchInput.classList.remove("text-black");
                 search.classList.remove("border");
                 infor.classList.remove("infor-right-border");
                 cartBlock.classList.remove("infor-right-border");
             }
         }
-
-
+        // Uncaught TypeError: updateDebounce is not a function
         const slideImgs = $$('.container__slide-item');
         let imgIndex = 2;
 
@@ -323,8 +458,25 @@
             }
             // console.log(imgIndex)
             // console.log(slideImgs.length) đếm từ 1 còn imgIndex đếm từ 0 từ vị trí đầu tiên first  
-            setTimeout(slideShow, 2000)
+            setTimeout(slideShow, 3000)
             // khi refresh web vòng lập bắt đầu first biến thành fourth imgIndex=2 bằng với item third
+        }
+
+        slideShow();
+
+        function previewImage() {
+            var input = document.getElementById('imageInput');
+            var preview = document.getElementById('imagePreview');
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
         }
     </script>
 </body>
