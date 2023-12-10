@@ -141,8 +141,7 @@
         font-weight: 400;
     }
 
-    .purchase-info {
-    }
+    .purchase-info {}
 
     .purchase-info input,
     .purchase-info .btn {
@@ -155,7 +154,7 @@
 
     .purchase-info input {
         padding: 3px 0;
-    width: 100px;
+        width: 100px;
     }
 
     .purchase-info .btn {
@@ -224,6 +223,7 @@
             padding-top: 0;
         }
     }
+
     header {
         position: relative;
     }
@@ -232,7 +232,8 @@
         display: none;
         z-index: 1000;
     }
-    .box-notify{
+
+    .box-notify {
         display: none;
         background-color: white;
         position: absolute;
@@ -244,61 +245,65 @@
         transition: opacity 0.3s ease-in-out;
         /* pointer-events: none; */
     }
+
     .box-notify.appear {
         display: block;
     }
-    
+
     .body-notify-img {
         width: 88px;
         height: 88px;
     }
+
     .body-btn-cart button {
         padding: 10px 24px;
     }
+
     .btn-notify {
         width: 120px;
         margin-right: 8px;
     }
+
     .btn-notify:hover {
-        color: white!important;
+        color: white !important;
     }
 </style>
 <?php
 ?>
-    <div id="resultDiv" class="d-flex flex-column align-items-end">
-        <div class="box-notify" style="position: fixed;">
-            <div class="">
+<div id="resultDiv" class="d-flex flex-column align-items-end">
+    <div class="box-notify" style="position: fixed;">
+        <div class="">
             <div class="heading-notify-cart d-flex justify-content-between mb-4">
-            <div class="heading-left">
-                <i style="color: green;" class="fa-solid fa-circle-check"></i>
-                Added to Bag
+                <div class="heading-left">
+                    <i style="color: green;" class="fa-solid fa-circle-check"></i>
+                    Added to Bag
+                </div>
+                <div style="cursor: pointer;" class="heading-left" onclick="removeNotifyCart()">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
             </div>
-            <div style="cursor: pointer;" class="heading-left" onclick="removeNotifyCart()">
-                <i class="fa-solid fa-xmark"></i>
+            <hr>
+            <div class="body-notify-card d-flex">
+                <div class="body-notify-img">
+                    <img class="h-100 w-100" src="<?php echo $model->product_image ?>" alt="">
+                </div>
+                <div class="body-notify-des d-flex flex-column mx-4" style="width: 280px;">
+                    <p class="mb-0"><?php echo $model->product_name ?></p>
+                    <span style="color: #707072; margin-bottom: 8px;"><?php echo $model->description ?></span>
+                    <span><?php echo $model->price ?>₫</span>
+                </div>
             </div>
-        </div>
-    <hr>
-    <div class="body-notify-card d-flex">
-        <div class="body-notify-img">
-            <img class="h-100 w-100" src="<?php echo $model->product_image ?>" alt="">
-        </div>
-        <div class="body-notify-des d-flex flex-column mx-4" style="width: 280px;">
-            <p class="mb-0"><?php echo $model->product_name ?></p>
-            <span style="color: #707072; margin-bottom: 8px;"><?php echo $model->description ?></span>
-            <span><?php echo $model->price ?>₫</span>
+            <div class="body-btn-cart mt-4 ">
+                <a href="/cart">
+                    <button style="font-weight: 400;" class="btn-notify btn btn-primary">View bag</button>
+                </a>
+                <a href="">
+                    <button class="btn-notify btn btn-dark">Check out</button>
+                </a>
+            </div>
         </div>
     </div>
-    <div class="body-btn-cart mt-4 ">
-        <a href="/cart">
-            <button style="font-weight: 400;" class="btn-notify btn btn-primary">View bag</button>
-        </a>
-        <a href="">
-            <button class="btn-notify btn btn-dark">Check out</button>
-        </a>
-    </div>
-            </div>
-        </div>
-    </div>
+</div>
 <div class="card-wrapper" style="margin-top: 55px;">
     <div class="card" style="border: none;">
         <!-- card left -->
@@ -390,136 +395,52 @@
     </div>
 </div>
 <div class="">
-<div class="" style="margin: 80px 190px;">
-    <div class="row d-flex justify-content-center chat-box rounded" style="overflow-y: scroll; height:400px; align-content: flex-start;">
-        <div class="d-flex flex-start mt-4">
-            <img class="rounded-circle shadow-1-strong me-3" style="width: 40px; height: 40px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="avatar" width="65" height="65" />
-            <div class="flex-grow-1 flex-shrink-1">
-                <div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p class="mb-1">
-                             Votien dat<span class="small">' . $row['created_at'] . ' - ' . $row['id'] . ' hours ago</span>
-                        </p>
-                        <a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
+    <div class="" style="margin: 80px 190px;">
+        <p style="font-size: 16px;">Reviews</p>
+        <hr>
+        <div class="row d-flex justify-content-center chat-box rounded" style="overflow-y: scroll; height:200px; align-content: flex-start;">
+            <?php if (!empty($message)) {
+                foreach ($message as $key => $value) {
+                ?>
+                    <div class="d-flex flex-start mt-4">
+                        <img class="rounded-circle shadow-1-strong me-3" style="width: 40px; height: 40px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="avatar" width="65" height="65" />
+                        <div class="flex-grow-1 flex-shrink-1">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="mb-1">
+                                        Votien dat<span class="small">' . $row['created_at'] . ' - ' . $row['id'] . ' hours ago</span>
+                                    </p>
+                                    <a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
+                                </div>
+                                <p class="small text-mess mb-0" style="width: 700px;">
+                                    <?php echo $value['message'] ?>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <p class="small mb-0" style="width: 700px;">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem cupiditate, deserunt accusantium ipsam voluptas possimus cumque aliquid minus perferendis quia iusto consectetur sit voluptatum error eius esse itaque, quae unde.
-                    </p>
-                </div>
-            </div>
+    
+                <?php
+                }
+            } else {
+                ?>  
+                    <h4>Chưa có bình luận nào</h4>
+                <?php
+            }
+            ?>
         </div>
-
-        <div class="d-flex flex-start mt-4">
-            <img class="rounded-circle shadow-1-strong me-3" style="width: 40px; height: 40px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="avatar" width="65" height="65" />
-            <div class="flex-grow-1 flex-shrink-1">
-                <div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p class="mb-1">
-                             Votien dat<span class="small">' . $row['created_at'] . ' - ' . $row['id'] . ' hours ago</span>
-                        </p>
-                        <a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
+        <?php if (isset($orderItem)) {
+        ?>
+            <div class="d-flex flex-start w-100 mt-4">
+                <img class="rounded-circle shadow-1-strong me-3" style="width: 40px; height: 40px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="avatar" width="40" height="40" />
+                <form style="padding: 0; margin: 0; box-shadow: none; float: left;" action="/product-detail" method="post" class="form_comment w-100" id="form_comment">
+                    <div class="d-flex" style="width: 40%;">
+                        <input type="text" class="incoming_id" name="product_id" value="<?php echo $_GET['id'] ?? null; ?>" hidden>
+                        <input type="text" class="input-field border w-100 px-2" style="border-radius: 12px; height: 50px;" name="message" placeholder="Type a message here..." autocomplete="off">
+                        <button class="px-4 btn btn-primary send-btn" name="submit_comment"><i class="fab fa-telegram-plane"></i></button>
                     </div>
-                    <p class="small mb-0" style="width: 700px;">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem cupiditate, deserunt accusantium ipsam voluptas possimus cumque aliquid minus perferendis quia iusto consectetur sit voluptatum error eius esse itaque, quae unde.
-                    </p>
-                </div>
+                </form>
             </div>
-        </div>
-
-        <div class="d-flex flex-start mt-4">
-            <img class="rounded-circle shadow-1-strong me-3" style="width: 40px; height: 40px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="avatar" width="65" height="65" />
-            <div class="flex-grow-1 flex-shrink-1">
-                <div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p class="mb-1">
-                             Votien dat<span class="small">' . $row['created_at'] . ' - ' . $row['id'] . ' hours ago</span>
-                        </p>
-                        <a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
-                    </div>
-                    <p class="small mb-0" style="width: 700px;">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem cupiditate, deserunt accusantium ipsam voluptas possimus cumque aliquid minus perferendis quia iusto consectetur sit voluptatum error eius esse itaque, quae unde.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="d-flex flex-start mt-4">
-            <img class="rounded-circle shadow-1-strong me-3" style="width: 40px; height: 40px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="avatar" width="65" height="65" />
-            <div class="flex-grow-1 flex-shrink-1">
-                <div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p class="mb-1">
-                             Votien dat<span class="small">' . $row['created_at'] . ' - ' . $row['id'] . ' hours ago</span>
-                        </p>
-                        <a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
-                    </div>
-                    <p class="small mb-0" style="width: 700px;">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem cupiditate, deserunt accusantium ipsam voluptas possimus cumque aliquid minus perferendis quia iusto consectetur sit voluptatum error eius esse itaque, quae unde.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="d-flex flex-start mt-4">
-            <img class="rounded-circle shadow-1-strong me-3" style="width: 40px; height: 40px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="avatar" width="65" height="65" />
-            <div class="flex-grow-1 flex-shrink-1">
-                <div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p class="mb-1">
-                             Votien dat<span class="small">' . $row['created_at'] . ' - ' . $row['id'] . ' hours ago</span>
-                        </p>
-                        <a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
-                    </div>
-                    <p class="small mb-0" style="width: 700px;">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem cupiditate, deserunt accusantium ipsam voluptas possimus cumque aliquid minus perferendis quia iusto consectetur sit voluptatum error eius esse itaque, quae unde.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="d-flex flex-start mt-4">
-            <img class="rounded-circle shadow-1-strong me-3" style="width: 40px; height: 40px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="avatar" width="65" height="65" />
-            <div class="flex-grow-1 flex-shrink-1">
-                <div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p class="mb-1">
-                             Votien dat<span class="small">' . $row['created_at'] . ' - ' . $row['id'] . ' hours ago</span>
-                        </p>
-                        <a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
-                    </div>
-                    <p class="small mb-0" style="width: 700px;">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem cupiditate, deserunt accusantium ipsam voluptas possimus cumque aliquid minus perferendis quia iusto consectetur sit voluptatum error eius esse itaque, quae unde.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="d-flex flex-start mt-4">
-            <img class="rounded-circle shadow-1-strong me-3" style="width: 40px; height: 40px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="avatar" width="65" height="65" />
-            <div class="flex-grow-1 flex-shrink-1">
-                <div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p class="mb-1">
-                             Votien dat<span class="small">' . $row['created_at'] . ' - ' . $row['id'] . ' hours ago</span>
-                        </p>
-                        <a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
-                    </div>
-                    <p class="small mb-0" style="width: 700px;">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem cupiditate, deserunt accusantium ipsam voluptas possimus cumque aliquid minus perferendis quia iusto consectetur sit voluptatum error eius esse itaque, quae unde.
-                    </p>
-                </div>
-            </div>
-        </div>
+        <?php
+        } ?>
     </div>
-    <div class="d-flex flex-start w-100 mt-4">
-        <img class="rounded-circle shadow-1-strong me-3" style="width: 40px; height: 40px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="avatar" width="40" height="40" />
-        <form style="padding: 0; margin: 0; box-shadow: none; float: left;" action="" class="form_comment w-100" id="form_comment">
-            <div class="d-flex" style="width: 40%;">
-                <input type="text" class="incoming_id" name="product_id" value="<?php echo $_GET['id'] ?? null; ?>" hidden>
-                <input type="text" class="input-field border w-100 px-2" style="border-radius: 12px; height: 50px;" name="message" placeholder="Type a message here..." autocomplete="off">
-                <button class="px-4 btn btn-primary" name="submit_comment"><i class="fab fa-telegram-plane"></i></button>
-            </div>
-        </form>
-    </div>
-</div>
 </div>

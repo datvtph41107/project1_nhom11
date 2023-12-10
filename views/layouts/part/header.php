@@ -44,7 +44,7 @@
                 <?php else: ?>
                     <div class="dropdown" style="height: 48px;">
                         <button style="border-radius: 12px; height:100%; background-color: rgba(255, 255, 255, 0.12); color: rgb(255, 255, 255); backdrop-filter: blur(20px)" class="display-border d-flex align-items-center btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img  style="height: 100%; border-radius: 30px;" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1697087993~exp=1697088593~hmac=2fea8f0f3e1a74bbe86e9bff01aa81f11be80c85ca96617453b2012e6ebc7d9a" alt="img">
+                            <img  style="height: 100%; border-radius: 30px;" src="<?php echo Application::$app->userExists->avatar === '' ? 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp' : Application::$app->userExists->avatar ?>" alt="img">
                             <a style="margin-left: 6px;" ><?php echo Application::$app->userExists->getUserName() ?></a>
                         </button>
                         <ul class="dropdown-menu">

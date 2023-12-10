@@ -655,8 +655,21 @@ header {
     backdrop-filter: blur(20px);
     border-radius: 12px;
     margin-left: 30px;
+    position: relative;
+}
 
+.search-bar {
+    top: 100%;
+    left: 0;
+    display: none;
+}
 
+.contain-main {
+    cursor: pointer;
+}
+
+.contain-main:hover {
+    background-color: #707072;
 }
 
 .search-input {

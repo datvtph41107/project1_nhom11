@@ -1,12 +1,6 @@
-<div class="container" style="margin-top: 80px;
-    width: 100%;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    margin-left: 300px;
-    display: flex; margin-top: 80px; padding: 0px 100px;">
+<div class="container col-md-10 col-lg-8 col-xl-7" style="margin-top: 80px; ">
     <div class="row">
-        <div class="col-4 order-md-2 mb-4 ">
+        <div class="col-xl-5 order-md-2 mb-4 ">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
                 <span class="text-muted">Đặt Hàng</span>
                 <span class="badge badge-secondary badge-pill">3</span>
@@ -57,7 +51,7 @@
                 ?>
             </div>
         </div>
-        <div class="col-6 order-md-1">
+        <div class="col-xl-7 order-md-1">
             <!-- <h4 class="mb-3">Billing address</h4> -->
             <div style="margin-top: 0; align-items: baseline;" class="main-form checkout-form">
                 <div class="mb-4">
@@ -121,9 +115,6 @@
 
                     <?php echo $form->fieldUpdate($infor, 'email', $infor) ?>
                     <?php echo $form->fieldUpdate($infor, 'phone', $infor) ?>
-                    <!-- tinh/thanhpho -->
-                    <!-- quan/huyen -->
-                    <!-- phuong/xa -->
                     <p style="font-size: 18px;" class="d-flex pt-4">Name and Address
                         <hr>
                     </p>
@@ -174,7 +165,7 @@
                     </div>
                     <?php echo $form->field($model, 'address') ?>
 
-                    <input style="background-color: #E22A19; color: white;" class="w-100 fw-bold btn mt-4 py-2" type="submit" value="Continue" />
+                        <input style="background-color: #E22A19; color: white;" class="w-100 fw-bold btn mt-4 py-2" type="submit" value="Continue" />
                     <?php $form = \app\core\form\Form::end() ?>
                 <?php endif ?>
                 <div>

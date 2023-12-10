@@ -15,6 +15,7 @@ class User extends DbModel
     public string $email = '';
     public string $password = '';
     public string $confirmPassword = '';
+    public string $avatar = '';
     public int $status = self::STATUS_INACTIVE;
 
     public function tableName(): string
@@ -30,7 +31,7 @@ class User extends DbModel
     public function attributes(): array
     {
         return [
-            'firstname', 'lastname', 'email', 'password', 'status'
+            'firstname', 'lastname', 'email', 'password', 'status', 'avatar'
         ];
     }
 
